@@ -1,0 +1,16 @@
+{
+  "name": "aitelier",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AItelier: prompts, skills, and agents library.",
+  "scripts": {
+    "css": "bunx @tailwindcss/cli -i src/styles/input.css -o src/styles/library.css --minify",
+    "css:watch": "bunx @tailwindcss/cli -i src/styles/input.css -o src/styles/library.css --watch",
+    "setup:access": "bun run scripts/setup-access.ts",
+    "teardown:access": "bun run scripts/setup-access.ts -- --delete"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.3.0",
+    "@tailwindcss/cli": "^4.3.0"
+  }
+}

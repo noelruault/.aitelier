@@ -1,0 +1,6 @@
+{
+  "category": "debugging",
+  "tags": ["explain", "stack-trace", "walkthrough"],
+  "source": "builtin",
+  "related": ["copilot-rescue", "tdd-approach"]
+}

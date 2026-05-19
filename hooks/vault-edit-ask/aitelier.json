@@ -1,0 +1,8 @@
+{
+  "name": "vault-edit-ask",
+  "description": "PreToolUse hook that pauses for user confirmation before any HashiCorp Vault command that writes, deletes, rotates, or otherwise mutates the secret store.",
+  "category": "security",
+  "tags": ["pre-tool-use", "bash", "vault", "secrets", "confirm"],
+  "source": "builtin",
+  "install": { "scope": "user", "path": "~/.claude/settings.json" }
+}

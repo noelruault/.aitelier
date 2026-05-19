@@ -1,0 +1,101 @@
+# =============================================================
+#  Atelier .gitignore
+#  Stack: static HTML/JS SPA + Cloudflare Worker (TypeScript)
+#  Dev:   python3 -m http.server + wrangler dev
+#  Host:  macOS primary
+# =============================================================
+
+# ---------- Project scratch (local-only, never committed) ----
+.brainstorming/
+.backups/
+.plans/
+._docs/
+
+# ---------- macOS noise ----------
+.DS_Store
+**/.DS_Store
+._*
+.AppleDouble
+.LSOverride
+Icon
+.Spotlight-V100
+.Trashes
+.fseventsd
+.DocumentRevisions-V100
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# ---------- Node / npm (worker/ has its own, but cover anywhere) ----------
+node_modules/
+.npm/
+.yarn/
+.pnp.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+
+# ---------- TypeScript build artefacts ----------
+dist/
+build/
+*.tsbuildinfo
+
+# ---------- Cloudflare Workers / Wrangler ----------
+.wrangler/
+.dev.vars
+.dev.vars.*
+wrangler.toml.bak
+
+# ---------- Logs + crash dumps ----------
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# ---------- Python (dev server may leave bytecode) ----------
+__pycache__/
+*.pyc
+*.pyo
+
+# ---------- Editor / IDE ----------
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+.netrwhist
+.history/
+*.sublime-workspace
+*.sublime-project
+
+# ---------- Local env ----------
+.env
+.env.*
+!.env.example
+.envrc
+
+# ---------- Coverage / test output ----------
+coverage/
+.nyc_output/
+*.lcov
+
+# ---------- OS / archive cruft ----------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+# Claude Code worktree cache
+.claude/

@@ -1,0 +1,6 @@
+{
+  "category": "operations",
+  "tags": ["copilot", "external", "second-opinion"],
+  "source": "builtin",
+  "related": ["go-performance"]
+}

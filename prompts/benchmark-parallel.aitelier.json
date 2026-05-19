@@ -1,0 +1,6 @@
+{
+  "category": "performance",
+  "tags": ["benchmark", "parallel-agents", "worktree", "multi-step"],
+  "source": "builtin",
+  "related": ["benchmark-first", "compression-engineer", "go-performance"]
+}

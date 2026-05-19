@@ -1,0 +1,94 @@
+# GitHub Pages workflow for the published Aitelier mirror.
+#
+# The mirror is a pre-built snapshot (CSS already compiled upstream). This
+# workflow regenerates _bundle.br against the current content so external
+# visitors always see a bundle matching the deployed HEAD, then stages a
+# clean copy of the repo and uploads it as the Pages artifact.
+#
+# Triggers:
+#   - push to main: deploys.
+#   - workflow_dispatch: manual one-off run from the Actions tab.
+
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build site artifact
+    runs-on: ubuntu-latest
+    # Default deploy mode is Pages. Set repo Actions variable DEPLOY_MODE=worker
+    # to skip Pages and let deploy.yml redeploy the Worker instead.
+    if: vars.DEPLOY_MODE == '' || vars.DEPLOY_MODE == 'pages'
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Regenerate _manifest.json + _bundle.br against current content
+        run: |
+          if [[ -f scripts/build-manifest.ts ]]; then
+            bun run scripts/build-manifest.ts
+          fi
+          if [[ -f scripts/build-bundle.ts ]]; then
+            bun run scripts/build-bundle.ts
+          fi
+
+      - name: Stage clean site root
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          rsync -a --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude '.assetsignore' \
+            --exclude '.gitignore' \
+            --exclude 'worker/' \
+            --exclude 'package.json' \
+            --exclude 'bun.lock' \
+            --exclude 'scripts/' \
+            --exclude 'node_modules/' \
+            --exclude 'TODO.md' \
+            --exclude '*.log' \
+            --exclude '.DS_Store' \
+            --exclude '**/.DS_Store' \
+            ./ _site/
+
+      - name: Verify entrypoint
+        run: test -f _site/index.html
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    if: vars.DEPLOY_MODE == '' || vars.DEPLOY_MODE == 'pages'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

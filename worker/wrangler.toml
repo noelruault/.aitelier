@@ -1,0 +1,49 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "aitelier"
+main = "src/index.ts"
+compatibility_date = "2026-03-17"
+compatibility_flags = ["nodejs_compat"]
+
+# Workers Logs
+# Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
+[observability]
+enabled = true
+
+# Place the Worker close to the data it talks to. The cached path is KV-only,
+# but the cold path proxies api.github.com from the Worker, so smart mode
+# tends to shift placement nearer to GitHub on miss.
+[placement]
+mode = "smart"
+
+# Static-site assets. The Atelier SPA lives at the repo root, so the
+# directory is `../` from the worker/ folder. Routes that don't match the
+# API prefix fall through to this binding via env.ASSETS.fetch(request).
+[assets]
+directory = "../"
+binding = "ASSETS"
+
+# KV namespace used to cache GitHub responses across visitors. Keys live
+# under `github:repo:`, `github:tree:`, `github:file:` with TTLs from
+# worker/src/kv-cache.ts. For local `wrangler dev`, Miniflare emulates KV
+# from the placeholder id below. The production id is provisioned by the
+# Deploy-to-Cloudflare-Workers flow (or by `wrangler kv:namespace create`).
+[[kv_namespaces]]
+binding = "FORK_CACHE"
+id = "aitelier_fork_cache_local"
+preview_id = "aitelier_fork_cache_preview"
+
+[[r2_buckets]]
+binding = "LIBRARY"
+bucket_name = "aitelier-library"
+preview_bucket_name = "aitelier-library-preview"
+
+# Capability flags surfaced to the SPA via /api/library/ping. Off by default
+# so a freshly-deployed Worker behaves like Pages (no edit UI). Operators who
+# want in-browser editing flip this to "true" in their fork before deploying.
+# Pages has no wrangler, so this flag can never be set there: edit affordances
+# are structurally unavailable on the static deployment.
+[vars]
+EDITS_ENABLED = "false"
+
+[build]
+command = "bun run ../scripts/build-manifest.ts"

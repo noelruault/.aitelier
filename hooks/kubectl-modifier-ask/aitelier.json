@@ -1,0 +1,8 @@
+{
+  "name": "kubectl-modifier-ask",
+  "description": "PreToolUse hook that pauses for user confirmation before any kubectl command that mutates cluster state (apply, delete, patch, scale, edit, replace, rollout, drain, taint, etc.).",
+  "category": "security",
+  "tags": ["pre-tool-use", "bash", "kubernetes", "confirm"],
+  "source": "builtin",
+  "install": { "scope": "user", "path": "~/.claude/settings.json" }
+}

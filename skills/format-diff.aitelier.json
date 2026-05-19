@@ -1,0 +1,6 @@
+{
+  "category": "quality",
+  "tags": ["diff", "review", "formatting"],
+  "source": "builtin",
+  "related": ["tdd-approach", "explain-error"]
+}

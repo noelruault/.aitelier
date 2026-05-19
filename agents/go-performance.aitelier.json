@@ -1,0 +1,6 @@
+{
+  "category": "performance",
+  "tags": ["go", "pprof", "allocs", "escape-analysis"],
+  "source": "builtin",
+  "related": ["benchmark-first", "benchmark-parallel", "compression-engineer"]
+}

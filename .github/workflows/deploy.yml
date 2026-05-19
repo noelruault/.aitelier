@@ -1,0 +1,46 @@
+# Cloudflare Worker deploy workflow for the published Aitelier mirror.
+#
+# The mirror is a pre-built snapshot. The Worker reads its asset list from
+# _bundle.br (already shipped), so no manifest build step is needed here.
+#
+# Gating via repo Actions variable DEPLOY_MODE:
+#   unset or 'pages' -> skipped (pages.yml runs instead)
+#   'worker'         -> this workflow runs, wrangler deploys on every push
+#
+# Required repo secrets when DEPLOY_MODE='worker':
+#   CLOUDFLARE_API_TOKEN  scoped Workers Scripts: Edit + (R2 + KV: Edit for first run)
+#   CLOUDFLARE_ACCOUNT_ID account that owns the Worker
+
+name: Deploy Worker
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    if: vars.DEPLOY_MODE == 'worker'
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install worker dependencies
+        run: bun install --frozen-lockfile
+        working-directory: worker
+
+      - name: Deploy Worker (uploads ../ via Workers Assets)
+        run: bunx wrangler deploy
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'cmd=$(jq -r .tool_input.command); if echo \"$cmd\" | grep -Eq \"(^|[[:space:]])vault[[:space:]]+(write|delete|kv[[:space:]]+(put|delete|destroy|metadata)|policy[[:space:]]+(write|delete)|(auth|secrets)[[:space:]]+(enable|disable|tune)|lease[[:space:]]+revoke|token[[:space:]]+revoke|operator[[:space:]]+(unseal|seal|generate-root|rotate|rekey)|namespace[[:space:]]+(create|delete))\\b\"; then echo \"{\\\"hookSpecificOutput\\\":{\\\"hookEventName\\\":\\\"PreToolUse\\\",\\\"permissionDecision\\\":\\\"ask\\\",\\\"permissionDecisionReason\\\":\\\"vault edit operation detected. Confirm before writing to or removing from the secret store.\\\"}}\"; fi'"
+          }
+        ]
+      }
+    ]
+  }
+}
