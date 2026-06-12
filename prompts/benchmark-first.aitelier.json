@@ -1,0 +1,14 @@
+{
+  "category": "performance",
+  "tags": [
+    "benchmark",
+    "branchless",
+    "hot-path"
+  ],
+  "source": "builtin",
+  "related": [
+    "benchmark-parallel",
+    "compression-engineer",
+    "go-performance"
+  ]
+}

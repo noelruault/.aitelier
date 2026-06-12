@@ -1,0 +1,50 @@
+# Supply-chain source audit. Runs the trojan-horse grep checklist
+# (scripts/audit-source.ts) on every push/PR so the badge in README.md
+# answers "is the shipped surface free of payload primitives" at a glance.
+# Consumers building via publish-library.yml get the same audit inline.
+#
+# Hardening rationale: a workflow whose JOB is supply-chain integrity must not
+# itself be a supply-chain hole. Third-party actions are pinned to full commit
+# SHAs (mutable tags can be re-pointed at a malicious commit), the toolchain is
+# version-pinned, the GITHUB_TOKEN is read-only with no git credential left on
+# disk, and step-security/harden-runner records egress so a compromised action
+# or dependency phoning home shows up in the run. This is layers 1-2 of the
+# four-layer model (pin + build-egress) applied to the auditor itself.
+name: Supply-chain Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audit-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Audit shipped source
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Harden runner (audit egress)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2
+        with:
+          egress-policy: audit # flip to 'block' + allowed-endpoints once egress is known
+
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false # audit needs no git creds on disk
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: 1.3.14
+
+      - name: Audit shipped source
+        run: bun run scripts/audit-source.ts

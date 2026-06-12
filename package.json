@@ -1,0 +1,21 @@
+{
+  "name": "aitelier",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Aitelier: prompts, skills, and agents library.",
+  "scripts": {
+    "css": "bunx @tailwindcss/cli -i src/styles/input.css -o src/styles/library.css --minify",
+    "css:watch": "bunx @tailwindcss/cli -i src/styles/input.css -o src/styles/library.css --watch",
+    "setup:access": "bun run scripts/setup-access.ts",
+    "teardown:access": "bun run scripts/setup-access.ts -- --delete",
+    "demo:svg": "bun run scripts/build-galaxy-svg.ts",
+    "demo:tour": "bun add -d playwright && bunx playwright install chromium && bun run scripts/record-tour.ts",
+    "unwrap-md": "bun run scripts/unwrap-md.ts",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.0",
+    "playwright": "^1.60.0",
+    "tailwindcss": "^4.3.0"
+  }
+}

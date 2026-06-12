@@ -1,0 +1,13 @@
+{
+  "category": "quality",
+  "tags": [
+    "tdd",
+    "red-green",
+    "tests-first"
+  ],
+  "source": "builtin",
+  "related": [
+    "benchmark-first",
+    "format-diff"
+  ]
+}
