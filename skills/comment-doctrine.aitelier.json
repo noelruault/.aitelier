@@ -1,0 +1,12 @@
+{
+  "category": "quality",
+  "tags": [
+    "comments",
+    "doctrine",
+    "style"
+  ],
+  "source": "builtin",
+  "related": [
+    "comments-why"
+  ]
+}

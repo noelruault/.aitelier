@@ -1,0 +1,16 @@
+{
+  "category": "performance",
+  "tags": [
+    "web",
+    "css",
+    "javascript",
+    "typescript",
+    "rendering",
+    "benchmark"
+  ],
+  "source": "builtin",
+  "related": [
+    "performance-golang",
+    "format-diff"
+  ]
+}

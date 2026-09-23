@@ -1,0 +1,13 @@
+{
+  "category": "quality",
+  "tags": [
+    "comments",
+    "review",
+    "cleanup"
+  ],
+  "source": "builtin",
+  "related": [
+    "comment-doctrine",
+    "format-diff"
+  ]
+}

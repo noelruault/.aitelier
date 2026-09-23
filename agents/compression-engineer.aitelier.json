@@ -1,0 +1,15 @@
+{
+  "category": "performance",
+  "tags": [
+    "compression",
+    "http",
+    "benchmark",
+    "measurement"
+  ],
+  "source": "builtin",
+  "related": [
+    "performance-golang",
+    "benchmark-first",
+    "benchmark-parallel"
+  ]
+}

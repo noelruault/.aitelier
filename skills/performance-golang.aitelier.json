@@ -1,0 +1,16 @@
+{
+  "category": "performance",
+  "tags": [
+    "go",
+    "benchmark",
+    "allocations",
+    "concurrency"
+  ],
+  "source": "builtin",
+  "related": [
+    "performance-web",
+    "benchmark-first",
+    "benchmark-parallel",
+    "compression-engineer"
+  ]
+}

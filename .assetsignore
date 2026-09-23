@@ -1,0 +1,30 @@
+# Workers Assets, .gitignore-style exclusions. Anything matched here is
+# NOT uploaded with `wrangler deploy` and is invisible to the [assets]
+# binding the Worker reads from. This is the same root the static SPA
+# is served from, so we shave development-only paths out of the bundle.
+
+# Worker source + node_modules (workerd binary is 100+ MiB, well above
+# the 25 MiB per-asset limit) and Wrangler's local-dev scratch dir.
+worker/
+.wrangler/
+
+# Repo metadata + Git history.
+.git/
+.gitignore
+.editorconfig
+
+# Local planning / brainstorming / docs scratch, not served.
+.plans/
+.brainstorming/
+.backups/
+._docs/
+
+# macOS finder cruft + assorted noise.
+.DS_Store
+**/.DS_Store
+*.log
+
+# Top-level docs that aren't part of the SPA. (Keep prompts/, skills/,
+# agents/ uploaded since the local transport fetches them.)
+Makefile
+.assetsignore
